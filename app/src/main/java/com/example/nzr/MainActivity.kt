@@ -14,6 +14,7 @@ import okhttp3.Response
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
+import java.lang.Exception
 
 
 //936bbab43463e479a095c368eb847f35
@@ -30,9 +31,9 @@ class NZRInterceptor :Interceptor{
         var original = chain.request()
 
         var requestBuiler = original.newBuilder()
-            .addHeader("key","936bbab43463e479a095c368eb847f35")
-            .addHeader("token","dbaca998bd52ec777318a316442f4997c9441537b97f22e5fb9663288b5aa56d")
+
         var req = requestBuiler.build()
+        Log.d("Urll",req.url().toString())
         return chain.proceed(req)
     }
 }
@@ -44,24 +45,20 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
 
-        var okHttpClientBuilder = okhttp3.OkHttpClient.Builder()
-
-
-        okHttpClientBuilder.addInterceptor(NZRInterceptor())
-
-        var http3Client = okHttpClientBuilder.build()
-
-
         var retrofit: Retrofit =  Retrofit.Builder()
             .baseUrl("https://api.trello.com/1/")
             .addConverterFactory(GsonConverterFactory.create())
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-            //.client(http3Client)
             .build()
-        
+
         var trello : TrelloRequests =  retrofit.create(TrelloRequests::class.java)
 
-        var boardObser =  trello.getBoard("30uyYyEU").subscribe(
+
+
+        var boardObser =  trello
+            .getBoard("30uyYyEU","936bbab43463e479a095c368eb847f35",
+            "dbaca998bd52ec777318a316442f4997c9441537b97f22e5fb9663288b5aa56d")
+            .subscribe(
             {
                 Log.d("main","successs")
                 Log.d("main",it.name)
