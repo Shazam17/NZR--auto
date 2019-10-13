@@ -3,10 +3,15 @@ package com.example.nzr
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.nzr.common.adapters.CardListAdapter
 import com.example.nzr.data.rest.TrelloRequests
+import com.example.nzr.data.rest.models.cardShort
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_main.*
 import okhttp3.Interceptor
 import okhttp3.Request
@@ -40,6 +45,8 @@ class NZRInterceptor :Interceptor{
 
 class MainActivity : AppCompatActivity() {
 
+    lateinit var adapter :CardListAdapter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -58,16 +65,38 @@ class MainActivity : AppCompatActivity() {
         var boardObser =  trello
             .getBoard("30uyYyEU","936bbab43463e479a095c368eb847f35",
             "dbaca998bd52ec777318a316442f4997c9441537b97f22e5fb9663288b5aa56d")
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
             {
                 Log.d("main","successs")
-                Log.d("main",it.name)
-
+                Log.d("main",it.body()?.name)
             },{
                 Log.d("main","error")
                 Log.d("main",it.localizedMessage)
-
             })
+
+        lateinit var listCards : List<cardShort>
+        var listOserver  = trello.getListsOfBoard("30uyYyEU",
+            "936bbab43463e479a095c368eb847f35",
+            "dbaca998bd52ec777318a316442f4997c9441537b97f22e5fb9663288b5aa56d",
+            "all",
+            "all",
+            "all",
+            "name") .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(
+                {
+                    Log.d("main","successs")
+                    listCards = it.body()!!.cardList
+                    adapter = CardListAdapter(listCards ,this )
+                    list.adapter = adapter
+                    list.layoutManager = LinearLayoutManager(this)
+                },{
+                    Log.d("main","error")
+                    Log.d("main",it.localizedMessage)
+                })
+
 
     }
 

@@ -13,6 +13,14 @@ data class board(
      var pinned : Boolean,
      var url : Boolean,
      var shortUrl  :  Boolean
+)
 
+data class cardShort(
+    var id:String,
+    var name:String
+)
 
+data class listsCards(
+    var id :String,
+    var cardList:List<cardShort>
 )
