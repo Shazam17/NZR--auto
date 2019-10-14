@@ -43,6 +43,7 @@ class NZRInterceptor :Interceptor{
     }
 }
 
+
 class MainActivity : AppCompatActivity() {
 
     lateinit var adapter :CardListAdapter
@@ -76,22 +77,28 @@ class MainActivity : AppCompatActivity() {
                 Log.d("main",it.localizedMessage)
             })
 
-        lateinit var listCards : List<cardShort>
-        var listOserver  = trello.getListsOfBoard("30uyYyEU",
+        var listCards : List<cardShort>
+        var listOserver  = trello
+            .getListsOfBoard("30uyYyEU",
             "936bbab43463e479a095c368eb847f35",
             "dbaca998bd52ec777318a316442f4997c9441537b97f22e5fb9663288b5aa56d",
             "all",
-            "all",
-            "all",
-            "name") .subscribeOn(Schedulers.io())
+            "name",
+            "open",
+            "name")
+            .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 {
-                    Log.d("main","successs")
-                    listCards = it.body()!!.cardList
-                    adapter = CardListAdapter(listCards ,this )
-                    list.adapter = adapter
-                    list.layoutManager = LinearLayoutManager(this)
+                    if(it.isSuccessful){
+                        Log.d("main","successs")
+
+                        it.body()?.get(0)!!.cards.forEach{Log.d("main",it.name)}
+                        listCards = it.body()?.get(0)!!.cards
+                        adapter = CardListAdapter(listCards ,this)
+                        list.adapter = adapter
+                        list.layoutManager = LinearLayoutManager(this)
+                    }
                 },{
                     Log.d("main","error")
                     Log.d("main",it.localizedMessage)

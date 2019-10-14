@@ -21,6 +21,7 @@ data class cardShort(
 )
 
 data class listsCards(
-    var id :String,
-    var cardList:List<cardShort>
+    var id : String,
+    var name:String,
+    var cards : List<cardShort>
 )

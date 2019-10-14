@@ -22,6 +22,6 @@ interface TrelloRequests{
                         @Query("cards")cards:String,
                         @Query("card_fields")cardFields:String,
                         @Query("filter")filter:String,
-                        @Query("fields")fields:String) :Single<Response<listsCards>>
+                        @Query("fields")fields:String) :Single<Response<List<listsCards>>>
 
 }
