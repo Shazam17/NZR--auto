@@ -1,13 +1,18 @@
 package com.example.nzr.common.adapters
 
 import android.content.Context
+import android.content.Intent
+import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.nzr.R
 import com.example.nzr.data.rest.models.cardShort
+import com.example.nzr.modules.CardDetailActivity.CardDetailActivity
 import kotlinx.android.synthetic.main.card_kanban.view.*
 import java.util.zip.Inflater
 
@@ -15,8 +20,17 @@ class CardListAdapter(list:List<cardShort>,val context :Context) :RecyclerView.A
 
     var cardList:List<cardShort> = list
 
-    class CardHolder(val view: View) : RecyclerView.ViewHolder(view){
+    class CardHolder(val view: View,val context: Context) : RecyclerView.ViewHolder(view){
         var text : TextView = view.name
+        var id :String = ""
+        init{
+            view.setOnClickListener{
+                var intent = Intent(context,CardDetailActivity::class.java)
+                Log.d("detail",id)
+                intent.putExtra("id",id)
+                context.startActivity(intent)
+            }
+        }
     }
 
     override fun getItemCount(): Int {
@@ -25,10 +39,11 @@ class CardListAdapter(list:List<cardShort>,val context :Context) :RecyclerView.A
 
     override fun onBindViewHolder(holder: CardHolder, position: Int) {
         holder.text.text = cardList.get(position).name
+        holder.id = cardList.get(position).id
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CardHolder {
             return CardHolder(LayoutInflater.from(context)
-                .inflate(R.layout.card_kanban,parent,false))
+                .inflate(R.layout.card_kanban,parent,false),context)
     }
 }

@@ -20,6 +20,18 @@ data class cardShort(
     var name:String
 )
 
+
+data class cardDetail(
+    var id:String,
+    var name:String,
+    var address:String,
+    var pos:Float,
+    var url:String,
+    var subscribed:Boolean,
+    var desc: String
+
+)
+
 data class listsCards(
     var id : String,
     var name:String,
