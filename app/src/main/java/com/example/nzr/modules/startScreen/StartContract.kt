@@ -1,6 +1,7 @@
 package com.example.nzr.modules.startScreen
 
 import android.content.Context
+import com.example.nzr.data.rest.models.board
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.tasks.Task
 
@@ -17,5 +18,26 @@ interface StartContract{
         fun handleSignInResult(completedTask: Task<GoogleSignInAccount>)
         fun signIn()
     }
+
+    interface StartModel{
+
+    }
+
+}
+
+interface DepartmentContract{
+
+    interface DepartmentView{
+
+    }
+
+    interface  DepartmentPresenter{
+        fun fetchDepartments():List<board>
+    }
+
+    interface DepartmentModel{
+
+    }
+
 
 }

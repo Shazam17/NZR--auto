@@ -12,6 +12,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
+import retrofit2.http.QueryMap
 
 interface TrelloRequests{
 
@@ -33,8 +34,11 @@ interface TrelloRequests{
                     @Query("key")key:String ,
                     @Query("token")token:String,
                     @Query("fields")fields:String) : Single<Response<cardDetail>>
-    @GET("boards/")
-    fun getAllBoards(@Query("boards")boards:String):Single<Response<List<board>>>
+    @GET("/members/5992868b5f6b925617fc350c/boards")
+    fun getAllBoards(@Query("boards")boards:String,
+                     @Query("key")key:String ,
+                     @Query("token")token:String,
+                     @QueryMap params:Map<String,String> ):Single<Response<List<board>>>
 }
 interface YandexRequests{
 
