@@ -1,0 +1,21 @@
+package com.example.nzr.modules.startScreen
+
+import android.content.Context
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.android.gms.tasks.Task
+
+interface StartContract{
+
+
+    interface StartView{
+        fun toNextScreen()
+        fun getActivity():StartActivity
+        fun getCode() : String?
+    }
+
+    interface StartPresenter{
+        fun handleSignInResult(completedTask: Task<GoogleSignInAccount>)
+        fun signIn()
+    }
+
+}

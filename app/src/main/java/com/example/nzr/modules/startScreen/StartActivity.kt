@@ -1,5 +1,6 @@
 package com.example.nzr.modules.startScreen
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
@@ -9,113 +10,50 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.acitivity_start.*
 import android.content.Intent
+import android.provider.Settings
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.tasks.Task
 import com.google.android.gms.common.api.ApiException
-import androidx.fragment.app.FragmentActivity
 import com.google.firebase.auth.GoogleAuthProvider
 
 
-class StartActivity : AppCompatActivity() {
+class StartActivity : AppCompatActivity() ,StartContract.StartView{
+    lateinit var presenter : StartPresenter
+    lateinit var codeWeb :String
 
-
-    var RC_SIGN_IN = 9001
-    var TAG = "startActivity"
-    var auth = FirebaseAuth.getInstance()
-
-    lateinit var mGoogleSignInClient :GoogleSignInClient
-
-    private fun firebaseAuthWithGoogle(acct: GoogleSignInAccount) {
-        Log.d(TAG, "firebaseAuthWithGoogle:" + acct.id!!)
-
-        val credential = GoogleAuthProvider.getCredential(acct.idToken, null)
-        auth.signInWithCredential(credential)
-            .addOnCompleteListener(this) { task ->
-                if (task.isSuccessful) {
-                    // Sign in success, update UI with the signed-in user's information
-                    Log.d(TAG, "signInWithCredential:success")
-                    val user = auth.currentUser
-                    Log.d(TAG,user?.displayName.toString())
-
-                } else {
-                    // If sign in fails, display a message to the user.
-
-
-                }
-
-
-            }
+    override fun getCode(): String? {
+        return codeWeb
     }
-    public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+
+    override fun getActivity():StartActivity{
+        return this
+    }
+
+    override fun toNextScreen(){
+        var intent = Intent(this,ChooseDepActivity::class.java)
+        startActivity(intent)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-
-        // Result returned from launching the Intent from GoogleSignInClient.getSignInIntent(...);
-        if (requestCode == RC_SIGN_IN) {
-            // The Task returned from this call is always completed, no need to attach
-            // a listener.
+        if (requestCode == presenter.RC_SIGN_IN) {
             val task = GoogleSignIn.getSignedInAccountFromIntent(data)
-            handleSignInResult(task)
+            presenter.handleSignInResult(task)
         }
-    }
-    private fun handleSignInResult(completedTask: Task<GoogleSignInAccount>) {
-        try {
-            val account = completedTask.getResult(ApiException::class.java)
-            firebaseAuthWithGoogle(account!!)
-
-        } catch (e: ApiException) {
-            Log.w("log", "signInResult:failed code=" + e.statusCode)
-
-        }
-
-    }
-    fun signIn(){
-        var signInIntent = mGoogleSignInClient.signInIntent
-        startActivityForResult(signInIntent,RC_SIGN_IN)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(com.example.nzr.R.layout.acitivity_start)
 
-        var auth : FirebaseAuth = FirebaseAuth.getInstance()
-        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(getString(com.example.nzr.R.string.default_web_client_id))
-            .requestEmail()
-            .build()
-        mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
+
+        codeWeb  = getString(com.example.nzr.R.string.default_web_client_id)
+        presenter = StartPresenter(this)
+
 
         signInButton.setOnClickListener {
-            signIn()
+            presenter.signIn()
         }
     }
 }
 
-
-//        signUp.setOnClickListener {
-//            auth
-//                .createUserWithEmailAndPassword(email.text.toString(),password.text.toString())
-//                .addOnCompleteListener{
-//                    if(it.isSuccessful){
-//                        val user  = auth.currentUser
-//                    }else{
-//                        Log.e("main","errorSignUp")
-//                    }
-//                }
-//        }
-//
-//        signIn.setOnClickListener{
-//            auth
-//                .signInWithEmailAndPassword(email.text.toString(),password.text.toString())
-//                .addOnCompleteListener{
-//                    if(it.isSuccessful){
-//                        val user  = auth.currentUser
-//                    }else{
-//                        Log.e("main","errorSignIn")
-//
-//                    }
-//                }
-//        }
-//        exitBtn.setOnClickListener{
-//            auth.signOut()
-//
-//        }
