@@ -5,9 +5,11 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.nzr.R
 import com.example.nzr.data.rest.models.board
+import com.example.nzr.modules.KanbanBoards.KanbanBoardActivity
 import kotlinx.android.synthetic.main.card_kanban.view.*
 import java.util.zip.Inflater
 
@@ -19,7 +21,8 @@ class DepartmentAdapter(val departs :List<board>,val context: Context) :Recycler
 
         init{
             view.setOnClickListener{
-                var intent = Intent(context,)
+                var intent = Intent(context,KanbanBoardActivity::class.java)
+                context.startActivity(intent)
             }
         }
     }
