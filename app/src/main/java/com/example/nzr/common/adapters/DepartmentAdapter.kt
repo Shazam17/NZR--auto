@@ -1,20 +1,27 @@
 package com.example.nzr.common.adapters
 
+import android.content.Context
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.nzr.R
 import com.example.nzr.data.rest.models.board
+import kotlinx.android.synthetic.main.card_kanban.view.*
 import java.util.zip.Inflater
 
-class DepartmentAdapter(val departs :List<board>) :RecyclerView.Adapter<DepartmentAdapter.DepartHolder>(){
+class DepartmentAdapter(val departs :List<board>,val context: Context) :RecyclerView.Adapter<DepartmentAdapter.DepartHolder>(){
 
 
-    class DepartHolder(var view : View) : RecyclerView.ViewHolder(){
+    class DepartHolder(var view : View) : RecyclerView.ViewHolder(view){
 
+        val name = view.nameDetail
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DepartHolder {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return DepartmentAdapter.DepartHolder(
+            LayoutInflater.from(context)
+                .inflate(R.layout.card_kanban, parent, false))
     }
 
     override fun getItemCount(): Int {
@@ -22,6 +29,6 @@ class DepartmentAdapter(val departs :List<board>) :RecyclerView.Adapter<Departme
     }
 
     override fun onBindViewHolder(holder: DepartHolder, position: Int) {
-
+        holder.name.text = departs.get(position).name
     }
 }

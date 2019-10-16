@@ -28,10 +28,7 @@ class CardDetailActivity: AppCompatActivity(){
         id = intent.extras!!.getString("id")
         Log.d("detail2",id)
         var cardObserv = RetrofitFabric().getTrello()
-            .getCardById(id!!,
-                "936bbab43463e479a095c368eb847f35",
-                "dbaca998bd52ec777318a316442f4997c9441537b97f22e5fb9663288b5aa56d",
-                "name,desc")
+            .getCardById(id!!, "name,desc")
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(

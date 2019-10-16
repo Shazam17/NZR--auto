@@ -64,8 +64,7 @@ class MainActivity : AppCompatActivity() {
 
 
         var boardObser =  trello
-            .getBoard("30uyYyEU","936bbab43463e479a095c368eb847f35",
-            "dbaca998bd52ec777318a316442f4997c9441537b97f22e5fb9663288b5aa56d")
+            .getBoard("30uyYyEU")
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
@@ -80,8 +79,6 @@ class MainActivity : AppCompatActivity() {
         var listCards : List<cardShort>
         var listOserver  = trello
             .getListsOfBoard("30uyYyEU",
-            "936bbab43463e479a095c368eb847f35",
-            "dbaca998bd52ec777318a316442f4997c9441537b97f22e5fb9663288b5aa56d",
             "all",
             "name",
             "open",

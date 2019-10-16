@@ -28,11 +28,11 @@ interface StartContract{
 interface DepartmentContract{
 
     interface DepartmentView{
-
+        fun initAdapter(list:List<board>?)
     }
 
     interface  DepartmentPresenter{
-        fun fetchDepartments():List<board>
+        fun fetchDepartments()
     }
 
     interface DepartmentModel{
