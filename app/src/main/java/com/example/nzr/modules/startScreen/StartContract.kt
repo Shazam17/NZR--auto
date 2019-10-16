@@ -4,6 +4,11 @@ import android.content.Context
 import com.example.nzr.data.rest.models.board
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.tasks.Task
+import io.reactivex.disposables.CompositeDisposable
+
+abstract class RXPresenter{
+    val subscriptions: CompositeDisposable = CompositeDisposable()
+}
 
 interface StartContract{
 

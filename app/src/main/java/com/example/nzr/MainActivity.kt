@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.nzr.common.adapters.CardListAdapter
+import com.example.nzr.data.rest.RetrofitFabric
 import com.example.nzr.data.rest.TrelloRequests
 import com.example.nzr.data.rest.models.cardShort
 
@@ -44,7 +45,7 @@ class NZRInterceptor :Interceptor{
 }
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(){
 
     lateinit var adapter :CardListAdapter
 
@@ -52,18 +53,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-
-        var retrofit: Retrofit =  Retrofit.Builder()
-            .baseUrl("https://api.trello.com/1/")
-            .addConverterFactory(GsonConverterFactory.create())
-            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-            .build()
-
-        var trello : TrelloRequests =  retrofit.create(TrelloRequests::class.java)
-
-
-
-        var boardObser =  trello
+        RetrofitFabric()
+            .getTrello()
             .getBoard("30uyYyEU")
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())

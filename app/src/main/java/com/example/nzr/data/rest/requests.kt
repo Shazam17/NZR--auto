@@ -9,16 +9,13 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.http.GET
-import retrofit2.http.Path
-import retrofit2.http.Query
-import retrofit2.http.QueryMap
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import com.google.gson.GsonBuilder
 import com.google.gson.Gson
 import okhttp3.HttpUrl
 import okhttp3.Interceptor
+import retrofit2.http.*
 import java.io.IOException
 
 
@@ -37,9 +34,20 @@ interface TrelloRequests{
 
     @GET("cards/{cardId}")
     fun getCardById(@Path("cardId")cardId:String, @Query("fields")fields:String) : Single<Response<cardDetail>>
+
     @GET("members/5992868b5f6b925617fc350c/boards")
     fun getAllBoards(@QueryMap params:Map<String,String>):Single<Response<List<board>>>
 
+
+
+    @POST("cards/")
+    fun createCard(@QueryMap params:Map<String,String>)
+
+    @PUT("cards/")
+    fun updateCard(@QueryMap params:Map<String,String>)
+
+    @DELETE("cards/")
+    fun deleteCard(@Query("id") id:String)
 
 
 }
