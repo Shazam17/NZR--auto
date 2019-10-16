@@ -1,6 +1,8 @@
 package com.example.nzr.modules.startScreen
 
+import android.app.Activity
 import android.content.Context
+import com.example.nzr.common.mvp.IView
 import com.example.nzr.data.rest.models.board
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.tasks.Task
@@ -13,9 +15,9 @@ abstract class RXPresenter{
 interface StartContract{
 
 
-    interface StartView{
+    interface StartView : IView{
         fun toNextScreen()
-        fun getActivity():StartActivity
+        override fun getActivity():Activity
         fun getCode() : String?
     }
 

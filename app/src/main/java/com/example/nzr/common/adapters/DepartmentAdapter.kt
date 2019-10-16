@@ -5,23 +5,22 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.nzr.R
 import com.example.nzr.data.rest.models.board
-import com.example.nzr.modules.KanbanBoards.KanbanBoardActivity
+import com.example.nzr.modules.kanbanBoards.KanbanBoardActivity
 import kotlinx.android.synthetic.main.card_kanban.view.*
-import java.util.zip.Inflater
 
 class DepartmentAdapter(val departs :List<board>,val context: Context) :RecyclerView.Adapter<DepartmentAdapter.DepartHolder>(){
 
 
     class DepartHolder(var view : View,val context: Context) : RecyclerView.ViewHolder(view){
         val name = view.nameDetail
-
+        lateinit var id :String
         init{
             view.setOnClickListener{
                 var intent = Intent(context,KanbanBoardActivity::class.java)
+                intent.putExtra("id",id)
                 context.startActivity(intent)
             }
         }
@@ -39,5 +38,6 @@ class DepartmentAdapter(val departs :List<board>,val context: Context) :Recycler
 
     override fun onBindViewHolder(holder: DepartHolder, position: Int) {
         holder.name.text = departs.get(position).name
+        holder.id = departs.get(position).id
     }
 }

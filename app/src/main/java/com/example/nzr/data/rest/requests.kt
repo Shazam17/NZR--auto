@@ -26,11 +26,7 @@ interface TrelloRequests{
     fun getBoard(@Path("boardID")boardId:String) :Single<Response<board>>
 
     @GET("boards/{boardID}/lists")
-    fun getListsOfBoard(@Path("boardID")boardId:String,
-                        @Query("cards")cards:String,
-                        @Query("card_fields")cardFields:String,
-                        @Query("filter")filter:String,
-                        @Query("fields")fields:String) :Single<Response<List<listsCards>>>
+    fun getListsOfBoard(@Path("boardID")boardId:String,@QueryMap params: Map<String, String>) :Single<Response<List<listsCards>>>
 
     @GET("cards/{cardId}")
     fun getCardById(@Path("cardId")cardId:String, @Query("fields")fields:String) : Single<Response<cardDetail>>

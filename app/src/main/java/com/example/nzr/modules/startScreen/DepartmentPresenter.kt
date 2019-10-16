@@ -3,6 +3,7 @@ package com.example.nzr.modules.startScreen
 import android.util.Log
 import com.example.nzr.data.rest.RetrofitFabric
 import com.example.nzr.data.rest.models.board
+import com.example.nzr.data.rest.repository.TrelloRepository
 import io.reactivex.Scheduler
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -12,22 +13,17 @@ import io.reactivex.subjects.PublishSubject
 
 class DepartmentPresenter(var view:DepartmentContract.DepartmentView) : DepartmentContract.DepartmentPresenter , RXPresenter(){
 
+    var trelloRepository = TrelloRepository()
 
     override fun fetchDepartments() {
-        var map = mapOf("fields" to "all")
         var retList :List<board>?
-        subscriptions += RetrofitFabric()
-            .getTrello()
-            .getAllBoards(map)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
+        subscriptions += trelloRepository
+            .fetchBoards()
             .subscribe({
                     retList = it.body()
-                    retList?.forEach { Log.d("fetch",it.name) }
+                    retList?.forEach { Log.d("ret",it.id.toString()) }
                     view.initAdapter(retList)
-
                 },{
-                    Log.d("fetch","errorr")
                     Log.d("fetch",it.localizedMessage)
                 })
     }

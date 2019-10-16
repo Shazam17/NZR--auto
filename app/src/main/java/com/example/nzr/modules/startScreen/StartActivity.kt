@@ -45,15 +45,10 @@ class StartActivity : AppCompatActivity() ,StartContract.StartView{
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(com.example.nzr.R.layout.acitivity_start)
-
-
         codeWeb  = getString(com.example.nzr.R.string.default_web_client_id)
         presenter = StartPresenter(this)
-
-
         signInButton.setOnClickListener {
             presenter.signIn()
         }
     }
 }
-

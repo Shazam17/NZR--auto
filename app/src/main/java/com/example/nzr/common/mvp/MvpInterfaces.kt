@@ -1,9 +1,11 @@
 package com.example.nzr.common.mvp
 
+import android.app.Activity
 import android.view.View
 
-interface IView{
 
+interface IView{
+    fun getActivity(): Activity
 }
 
 
