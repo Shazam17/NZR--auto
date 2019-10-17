@@ -34,8 +34,6 @@ interface TrelloRequests{
     @GET("members/5992868b5f6b925617fc350c/boards")
     fun getAllBoards(@QueryMap params:Map<String,String>):Single<Response<List<board>>>
 
-
-
     @POST("cards/")
     fun createCard(@QueryMap params:Map<String,String>)
 

@@ -15,7 +15,7 @@ class DepartmentAdapter(val departs :List<board>,val context: Context) :Recycler
 
 
     class DepartHolder(var view : View,val context: Context) : RecyclerView.ViewHolder(view){
-        val name = view.nameDetail
+        val name = view.textCardKanban
         lateinit var id :String
         init{
             view.setOnClickListener{

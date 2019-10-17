@@ -19,7 +19,7 @@ class CardListAdapter(list:List<cardShort>,val context :Context) :RecyclerView.A
     var cardList:List<cardShort> = list
 
     class CardHolder(val view: View,val context: Context) : RecyclerView.ViewHolder(view){
-        var text : TextView = view.nameDetail
+        var text : TextView = view.textCardKanban
         var id :String = ""
         init{
             view.setOnClickListener{

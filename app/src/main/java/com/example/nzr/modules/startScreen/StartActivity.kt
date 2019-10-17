@@ -15,6 +15,16 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.tasks.Task
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.GoogleAuthProvider
+import com.vk.api.sdk.VK
+import com.vk.api.sdk.auth.VKAccessToken
+import com.vk.api.sdk.auth.VKAuthCallback
+import com.vk.api.sdk.auth.VKScope
+import com.vk.api.sdk.utils.VKUtils
+import androidx.core.app.ComponentActivity.ExtraData
+import androidx.core.content.ContextCompat.getSystemService
+import android.icu.lang.UCharacter.GraphemeClusterBreak.T
+
+
 
 
 class StartActivity : AppCompatActivity() ,StartContract.StartView{
@@ -40,6 +50,18 @@ class StartActivity : AppCompatActivity() ,StartContract.StartView{
             val task = GoogleSignIn.getSignedInAccountFromIntent(data)
             presenter.handleSignInResult(task)
         }
+        val callback = object: VKAuthCallback {
+            override fun onLogin(token: VKAccessToken) {
+                // User passed authorization
+            }
+
+            override fun onLoginFailed(errorCode: Int) {
+                // User didn't pass authorization
+            }
+        }
+        if (data == null || !VK.onActivityResult(requestCode, resultCode, data, callback)) {
+            super.onActivityResult(requestCode, resultCode, data)
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,6 +71,10 @@ class StartActivity : AppCompatActivity() ,StartContract.StartView{
         presenter = StartPresenter(this)
         signInButton.setOnClickListener {
             presenter.signIn()
+        }
+        val fingerprints = VKUtils.getCertificateFingerprint(this, this.packageName)
+        signVK.setOnClickListener{
+            VK.login(this, arrayListOf(VKScope.WALL, VKScope.PHOTOS))
         }
     }
 }

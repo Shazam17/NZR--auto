@@ -21,7 +21,6 @@ class DepartmentPresenter(var view:DepartmentContract.DepartmentView) : Departme
             .fetchBoards()
             .subscribe({
                     retList = it.body()
-                    retList?.forEach { Log.d("ret",it.id.toString()) }
                     view.initAdapter(retList)
                 },{
                     Log.d("fetch",it.localizedMessage)
