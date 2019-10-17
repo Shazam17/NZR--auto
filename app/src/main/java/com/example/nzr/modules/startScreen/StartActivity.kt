@@ -50,18 +50,7 @@ class StartActivity : AppCompatActivity() ,StartContract.StartView{
             val task = GoogleSignIn.getSignedInAccountFromIntent(data)
             presenter.handleSignInResult(task)
         }
-        val callback = object: VKAuthCallback {
-            override fun onLogin(token: VKAccessToken) {
-                // User passed authorization
-            }
 
-            override fun onLoginFailed(errorCode: Int) {
-                // User didn't pass authorization
-            }
-        }
-        if (data == null || !VK.onActivityResult(requestCode, resultCode, data, callback)) {
-            super.onActivityResult(requestCode, resultCode, data)
-        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -73,8 +62,6 @@ class StartActivity : AppCompatActivity() ,StartContract.StartView{
             presenter.signIn()
         }
         val fingerprints = VKUtils.getCertificateFingerprint(this, this.packageName)
-        signVK.setOnClickListener{
-            VK.login(this, arrayListOf(VKScope.WALL, VKScope.PHOTOS))
-        }
+
     }
 }
