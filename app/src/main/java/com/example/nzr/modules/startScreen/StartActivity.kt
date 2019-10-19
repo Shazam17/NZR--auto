@@ -24,8 +24,10 @@ import androidx.core.app.ComponentActivity.ExtraData
 import androidx.core.content.ContextCompat.getSystemService
 import android.icu.lang.UCharacter.GraphemeClusterBreak.T
 
-
-
+//AgAAAAAUjHxjAAXqvJEutRVo7kE9sfwnpdzFs9A yandex token
+// e963f1635b624ec7aca5efd8e6d15fdf id
+// 191ac45360384a30a698ea8adaea7803 password
+// 3412023 id organization
 
 class StartActivity : AppCompatActivity() ,StartContract.StartView{
     lateinit var presenter : StartPresenter

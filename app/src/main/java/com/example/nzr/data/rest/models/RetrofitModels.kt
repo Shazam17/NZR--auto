@@ -37,3 +37,32 @@ data class listsCards(
     var name:String,
     var cards : List<cardShort>
 )
+
+data class yandexBoard(
+    var self : String,
+    var id : String,
+    var version : String,
+    var name : String,
+    var columns : List<yandexColumn>,
+    //filter
+    var useRanking : Boolean
+)
+data class yandexColumn(
+    var self : String,
+    var id : String,
+    var display : String
+)
+
+data class genericBoardShort(
+    var id : String,
+    var name : String,
+    var vendor : Boolean
+)
+
+fun yandexToGenerix(board:yandexBoard) : genericBoardShort{
+    return genericBoardShort(board.id , board.name, false)
+}
+
+fun trelloToGenerix(board:board) : genericBoardShort{
+    return genericBoardShort(board.id , board.name, true)
+}

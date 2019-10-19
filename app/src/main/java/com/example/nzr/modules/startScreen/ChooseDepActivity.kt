@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.nzr.R
 import com.example.nzr.common.adapters.DepartmentAdapter
 import com.example.nzr.data.rest.models.board
+import com.example.nzr.data.rest.models.genericBoardShort
 import kotlinx.android.synthetic.main.activity_choose_dep.*
 
 class ChooseDepActivity : AppCompatActivity()  , DepartmentContract.DepartmentView{
@@ -26,9 +27,13 @@ class ChooseDepActivity : AppCompatActivity()  , DepartmentContract.DepartmentVi
         //TODO навигация от отдела к доскам
     }
 
-    override fun initAdapter(depList:List<board>?) {
-        adapter =  DepartmentAdapter(depList!!,this)
+    override fun initAdapter(depList:MutableList<genericBoardShort>) {
+
+    }
+    override fun updateAdapter(depList:MutableList<genericBoardShort>){
+        adapter =  DepartmentAdapter(depList,this)
         list.adapter = adapter
         list.layoutManager = LinearLayoutManager(this)
+
     }
 }

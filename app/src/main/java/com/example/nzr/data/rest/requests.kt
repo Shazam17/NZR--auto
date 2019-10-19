@@ -3,6 +3,7 @@ package com.example.nzr.data.rest
 import com.example.nzr.data.rest.models.board
 import com.example.nzr.data.rest.models.cardDetail
 import com.example.nzr.data.rest.models.listsCards
+import com.example.nzr.data.rest.models.yandexBoard
 import io.reactivex.Observable
 import io.reactivex.Single
 import retrofit2.Response
@@ -47,11 +48,12 @@ interface TrelloRequests{
 }
 interface YandexRequests{
 
+    @GET("boards")
+    fun getAllBoards():Single<Response<List<yandexBoard>>>
 }
 
 class RetrofitFabric{
-    fun getRetrofit() :Retrofit{
-
+    fun getTrelloInterceptor(): OkHttpClient.Builder{
         val httpClient = OkHttpClient.Builder()
         httpClient.addInterceptor(object : Interceptor {
             @Throws(IOException::class)
@@ -72,20 +74,47 @@ class RetrofitFabric{
                 return chain.proceed(request)
             }
         })
+        return httpClient
+    }
+    fun getYandexInterceptor() :OkHttpClient.Builder{
+        val httpClient = OkHttpClient.Builder()
+        httpClient.addInterceptor(object : Interceptor {
+            @Throws(IOException::class)
+            override fun intercept(chain: Interceptor.Chain): okhttp3.Response {
+                val original = chain.request()
+                val originalHttpUrl = original.url()
+
+                val url = originalHttpUrl.newBuilder()
+                    .build()
+
+                // Request customization: add request headers
+                val requestBuilder = original.newBuilder()
+                    .addHeader("X-Org-Id","3412023")
+
+                    .header("Authorization","OAuth AgAAAAAUjHxjAAXqvJEutRVo7kE9sfwnpdzFs9A")
+                    .url(url)
+
+                val request = requestBuilder.build()
+                return chain.proceed(request)
+            }
+        })
+        return httpClient
+    }
+    fun getRetrofit(builder : OkHttpClient.Builder,adress:String) :Retrofit{
 
         return Retrofit.Builder()
-            .baseUrl("https://api.trello.com/1/")
+            .baseUrl(adress)
             .addConverterFactory(GsonConverterFactory.create())
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-            .client(httpClient.build())
+            .client(builder.build())
             .build()
     }
 
 
     fun getTrello() : TrelloRequests{
-        return getRetrofit().create(TrelloRequests::class.java)
+        return getRetrofit(getTrelloInterceptor(),"https://api.trello.com/1/").create(TrelloRequests::class.java)
     }
     fun getYandex() : YandexRequests{
-        return getRetrofit().create(YandexRequests::class.java)
+        return getRetrofit(getYandexInterceptor(),"https://api.tracker.yandex.net/v2/").create(YandexRequests::class.java)
     }
 }

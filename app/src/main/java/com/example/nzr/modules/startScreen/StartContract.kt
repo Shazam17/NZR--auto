@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import com.example.nzr.common.mvp.IView
 import com.example.nzr.data.rest.models.board
+import com.example.nzr.data.rest.models.genericBoardShort
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.tasks.Task
 import io.reactivex.disposables.CompositeDisposable
@@ -35,7 +36,8 @@ interface StartContract{
 interface DepartmentContract{
 
     interface DepartmentView{
-        fun initAdapter(list:List<board>?)
+        fun initAdapter(list:MutableList<genericBoardShort>)
+        fun updateAdapter(depList:MutableList<genericBoardShort>)
     }
 
     interface  DepartmentPresenter{
