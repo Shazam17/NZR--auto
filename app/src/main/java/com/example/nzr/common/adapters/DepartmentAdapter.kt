@@ -2,6 +2,8 @@ package com.example.nzr.common.adapters
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,20 +19,30 @@ class DepartmentAdapter(var departs :MutableList<genericBoardShort>,val context:
 
     class DepartHolder(var view : View,val context: Context) : RecyclerView.ViewHolder(view){
         val name = view.textCardKanban
+        var card = view.card
         lateinit var id :String
         var vendor:Boolean = false
         init{
                 view.setOnClickListener{
                     var intent = Intent(context,KanbanBoardActivity::class.java)
                     intent.putExtra("id",id)
+                    Log.d("vendor",vendor.toString())
                     if(vendor){
-                        intent.putExtra("vendor","trello")
+                        intent.putExtra("vendor",vendor)
 
                     }else{
-                        intent.putExtra("vendor","yandex")
+                        intent.putExtra("vendor",vendor)
                     }
                     context.startActivity(intent)
                 }
+        }
+        fun changeColor(){
+            if(vendor){
+                card.setCardBackgroundColor(Color.parseColor("#0000ff"))
+            }else{
+                card.setCardBackgroundColor(Color.parseColor("#ff0000"))
+
+            }
         }
     }
     fun update(list :MutableList<genericBoardShort>){
@@ -51,6 +63,7 @@ class DepartmentAdapter(var departs :MutableList<genericBoardShort>,val context:
     override fun onBindViewHolder(holder: DepartHolder, position: Int) {
         holder.name.text = departs.get(position).name
         holder.id = departs.get(position).id
-
+        holder.vendor = departs.get(position).vendor
+        holder.changeColor()
     }
 }

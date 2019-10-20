@@ -16,7 +16,7 @@ class TrelloRepository {
 
     var trelloFabric =  RetrofitFabric().getTrello()
 
-    fun fetchAllCards(id:String):Single<Response<List<listsCards>>>{
+    fun fetchCardsById(id:String):Single<Response<List<listsCards>>>{
         var map = mapOf("cards" to "all",
             "card_fields" to "name",
             "filter" to "open",

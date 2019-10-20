@@ -11,24 +11,30 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_card_detail.*
 
-class CardDetailActivity: AppCompatActivity(){
+class CardDetailActivity: AppCompatActivity(), CardDetailContract.CardDetailView{
 
-    var id :String? = ""
-    
+    var id : String? = ""
+    var vendor : Boolean? = null
+    var presenter = CardDetailPresenter(this)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_card_detail)
         id = intent.extras!!.getString("id")
-        var cardObserv =TrelloRepository().fetchCardById(id!!)
-            .subscribe(
-                {
-                    var name = it.body()?.name
-                    nameDetail.text = it.body()!!.name
-                    descDetail.text = it.body()!!.desc
-                },{
-                    Log.d("main",it.localizedMessage)
-                })
+        vendor = intent.extras!!.getBoolean("vendor")
 
+        if(!vendor!!){
+            presenter.fetchCardByIdYandex(id!!)
+        }else{
+            presenter.fetchCardByIdTrello(id!!)
+        }
+
+    }
+
+
+    override fun initViews(name : String , desc : String){
+        nameDetail.text = name
+        descDetail.text = desc
     }
 
 }

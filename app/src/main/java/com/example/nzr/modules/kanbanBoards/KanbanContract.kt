@@ -8,7 +8,8 @@ import com.example.nzr.modules.startScreen.StartActivity
 interface KanbanContract{
 
     interface KanbanPresenter{
-
+        fun fetchListsRepTrello()
+        fun fetchListsRepYandex()
     }
 
     interface KanbanView : IView{

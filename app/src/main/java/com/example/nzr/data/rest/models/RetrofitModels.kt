@@ -53,16 +53,37 @@ data class yandexColumn(
     var display : String
 )
 
+data class yandexQueue(
+    var self : String,
+    var id : String,
+    var key : String,
+    var display : String
+)
+
 data class genericBoardShort(
     var id : String,
     var name : String,
     var vendor : Boolean
 )
 
-fun yandexToGenerix(board:yandexBoard) : genericBoardShort{
+data class yandexCard(
+    var self : String,
+    var id : String,
+    var key : String,
+    var version : Int,
+    var lastCommentUpdatedAt : String,
+    var summary : String,
+    var queue: yandexQueue
+
+
+)
+
+fun yandexToGeneric(board:yandexBoard) : genericBoardShort{
     return genericBoardShort(board.id , board.name, false)
 }
 
-fun trelloToGenerix(board:board) : genericBoardShort{
+fun trelloToGeneric(board:board) : genericBoardShort{
     return genericBoardShort(board.id , board.name, true)
 }
+
+

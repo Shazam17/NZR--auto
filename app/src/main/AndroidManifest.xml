@@ -11,7 +11,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".modules.AddCard.AddCardActivity"/>
+        <activity android:name=".modules.addCard.AddCardActivity"/>
         <activity android:name=".modules.startScreen.ChooseDepActivity"/>
         <activity android:name=".modules.kanbanBoards.KanbanBoardActivity"/>
         <activity android:name=".modules.startScreen.StartActivity" >

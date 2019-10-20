@@ -26,7 +26,7 @@ class DepartmentPresenter(var view:DepartmentContract.DepartmentView) : Departme
         subscriptions += yandexRepository
             .fetchAllBoards()
             .subscribe({
-                it.body()?.forEach { boards.add(yandexToGenerix(it))
+                it.body()?.forEach { boards.add(yandexToGeneric(it))
                 Log.d("fetch",it.name)}
                 view.updateAdapter(boards)
             },{
@@ -36,7 +36,7 @@ class DepartmentPresenter(var view:DepartmentContract.DepartmentView) : Departme
         subscriptions += trelloRepository
             .fetchBoards()
             .subscribe({
-                it.body()?.forEach { boards.add(trelloToGenerix(it))
+                it.body()?.forEach { boards.add(trelloToGeneric(it))
                     Log.d("fetch",it.name)}
                 view.updateAdapter(boards)
             },{

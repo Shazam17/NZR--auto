@@ -1,9 +1,6 @@
 package com.example.nzr.data.rest
 
-import com.example.nzr.data.rest.models.board
-import com.example.nzr.data.rest.models.cardDetail
-import com.example.nzr.data.rest.models.listsCards
-import com.example.nzr.data.rest.models.yandexBoard
+import com.example.nzr.data.rest.models.*
 import io.reactivex.Observable
 import io.reactivex.Single
 import retrofit2.Response
@@ -50,6 +47,16 @@ interface YandexRequests{
 
     @GET("boards")
     fun getAllBoards():Single<Response<List<yandexBoard>>>
+
+    @GET("issues/{cardId}")
+    fun getCardById(@Path("cardId") cardId:String) :Single<Response<yandexCard>>
+
+    @POST("issues/_search")
+    fun getCards(@Body filter: Map<String,String>) : Single<Response<List<yandexCard>>>
+
+
+    @POST("issues/")
+    fun createCard(@Body queue: yandexQueue,@QueryMap params: Map<String, String>) :Single<Response<yandexCard>>
 }
 
 class RetrofitFabric{

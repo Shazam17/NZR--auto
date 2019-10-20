@@ -10,8 +10,8 @@ interface IView{
 
 
 interface IPresnter<in V :IView>{
-    fun takeView(v: View)
-    fun onViewAtached()
-    fun dropView()
-    fun onViewDetached()
+    //fun takeView(v: View)
+    //fun onViewAtached()
+    //fun dropView()
+    //fun onViewDetached()
 }

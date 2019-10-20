@@ -2,16 +2,14 @@ package com.example.nzr.modules.kanbanBoards
 
 import android.app.Activity
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import com.example.nzr.R
 import com.example.nzr.common.adapters.KanbanPagerAdapter
 import com.example.nzr.data.rest.models.listsCards
 import kotlinx.android.synthetic.main.activty_kanban.*
 import android.view.Menu
 import android.content.Intent
 import android.view.MenuItem
-import com.example.nzr.modules.AddCard.AddCardActivity
+import com.example.nzr.modules.addCard.AddCardActivity
 
 
 class KanbanBoardActivity :AppCompatActivity() ,KanbanContract.KanbanView{
@@ -20,19 +18,25 @@ class KanbanBoardActivity :AppCompatActivity() ,KanbanContract.KanbanView{
     var presenter =  KanbanPresenter(this)
 
     var boardIdIn : String = ""
+    var vendor : Boolean? = null
     lateinit var adapter : KanbanPagerAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(com.example.nzr.R.layout.activty_kanban)
         boardIdIn = intent.extras!!.getString("id")!!
-        Log.d("kanban",boardIdIn)
+        vendor = intent.extras!!.getBoolean("vendor")
 
-        presenter.fetchListsRep()
+        if(!vendor!!){
+            presenter.fetchListsRepYandex()
+        }else{
+            presenter.fetchListsRepTrello()
+
+        }
     }
 
     override fun initPagerAdapter(lists: List<listsCards>){
-        adapter = KanbanPagerAdapter(lists,this)
+        adapter = KanbanPagerAdapter(lists,this,vendor!!)
         pager.adapter = adapter
     }
 
@@ -51,11 +55,12 @@ class KanbanBoardActivity :AppCompatActivity() ,KanbanContract.KanbanView{
         when (item.getItemId()) {
             com.example.nzr.R.id.add  ->{
                 var intent = Intent(this,AddCardActivity::class.java)
+                intent.putExtra("vendor",vendor)
+                intent.putExtra("boardId",boardIdIn)
                 startActivity(intent)
                 return true
 
             }
-
 
             else ->
                 // If we got here, the user's action was not recognized.
