@@ -26,6 +26,10 @@ class AddCardActivity  :AppCompatActivity(), CreateCardContract.AddCardView{
 
     }
 
+    override fun back() {
+        finish()
+    }
+
     override fun getCardId(): String {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }

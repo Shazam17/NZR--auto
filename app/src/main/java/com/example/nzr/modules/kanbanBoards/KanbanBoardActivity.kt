@@ -8,6 +8,7 @@ import com.example.nzr.data.rest.models.listsCards
 import kotlinx.android.synthetic.main.activty_kanban.*
 import android.view.Menu
 import android.content.Intent
+import android.util.Log
 import android.view.MenuItem
 import com.example.nzr.modules.addCard.AddCardActivity
 
@@ -55,6 +56,7 @@ class KanbanBoardActivity :AppCompatActivity() ,KanbanContract.KanbanView{
         when (item.getItemId()) {
             com.example.nzr.R.id.add  ->{
                 var intent = Intent(this,AddCardActivity::class.java)
+                Log.d("board",boardIdIn)
                 intent.putExtra("vendor",vendor)
                 intent.putExtra("boardId",boardIdIn)
                 startActivity(intent)

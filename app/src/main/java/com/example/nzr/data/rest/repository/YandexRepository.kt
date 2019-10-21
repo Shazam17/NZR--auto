@@ -2,10 +2,7 @@ package com.example.nzr.data.rest.repository
 
 import com.example.nzr.data.rest.RetrofitFabric
 import com.example.nzr.data.rest.YandexRequests
-import com.example.nzr.data.rest.models.listsCards
-import com.example.nzr.data.rest.models.yandexBoard
-import com.example.nzr.data.rest.models.yandexCard
-import com.example.nzr.data.rest.models.yandexQueue
+import com.example.nzr.data.rest.models.*
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -37,7 +34,7 @@ class YandexRepository {
     }
 
     fun createCard(name:String ,id:String) : Single<Response<yandexCard>>{
-        var map = mapOf<String,String>("summary" to name,"queue" to id)
+        var map = requestCreateCardYandexBody(queueShort(id),name)
         return repository
             .createCard(map)
             .subscribeOn(Schedulers.io())

@@ -74,8 +74,14 @@ data class yandexCard(
     var lastCommentUpdatedAt : String,
     var summary : String,
     var queue: yandexQueue
+)
 
-
+data class queueShort(
+    var id: String
+)
+data class requestCreateCardYandexBody(
+    var queue: queueShort,
+    var summary: String
 )
 
 fun yandexToGeneric(board:yandexBoard) : genericBoardShort{

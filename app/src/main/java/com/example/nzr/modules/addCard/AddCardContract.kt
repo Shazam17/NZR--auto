@@ -9,6 +9,7 @@ interface CreateCardContract{
 
     interface AddCardView{
         fun getCardId():String
+        fun back()
     }
 
     interface AddCardModel{

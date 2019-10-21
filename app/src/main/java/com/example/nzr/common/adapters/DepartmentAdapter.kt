@@ -26,6 +26,7 @@ class DepartmentAdapter(var departs :MutableList<genericBoardShort>,val context:
                 view.setOnClickListener{
                     var intent = Intent(context,KanbanBoardActivity::class.java)
                     intent.putExtra("id",id)
+                    Log.d("id",id)
                     Log.d("vendor",vendor.toString())
                     if(vendor){
                         intent.putExtra("vendor",vendor)
