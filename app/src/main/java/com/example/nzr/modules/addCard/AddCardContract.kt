@@ -1,6 +1,6 @@
 package com.example.nzr.modules.addCard
 
-interface AddCardContract{
+interface CreateCardContract{
 
 
     interface AddCardPresenter{
@@ -8,7 +8,7 @@ interface AddCardContract{
     }
 
     interface AddCardView{
-
+        fun getCardId():String
     }
 
     interface AddCardModel{

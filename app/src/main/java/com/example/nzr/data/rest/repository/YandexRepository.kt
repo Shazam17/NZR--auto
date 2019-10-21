@@ -36,10 +36,10 @@ class YandexRepository {
             .observeOn(AndroidSchedulers.mainThread())
     }
 
-    fun createCard(name:String ,id:String){
-        var map = mapOf<String,String>("summary" to name)
+    fun createCard(name:String ,id:String) : Single<Response<yandexCard>>{
+        var map = mapOf<String,String>("summary" to name,"queue" to id)
         return repository
-            .createCard(yandexQueue(self = "",id = id,key = "",display = ""))
+            .createCard(map)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
     }

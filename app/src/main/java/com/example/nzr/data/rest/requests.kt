@@ -56,7 +56,7 @@ interface YandexRequests{
 
 
     @POST("issues/")
-    fun createCard(@Body queue: yandexQueue,@QueryMap params: Map<String, String>) :Single<Response<yandexCard>>
+    fun createCard(@QueryMap params: Map<String, String>) :Single<Response<yandexCard>>
 }
 
 class RetrofitFabric{
