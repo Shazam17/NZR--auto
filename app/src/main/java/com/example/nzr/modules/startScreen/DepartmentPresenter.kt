@@ -47,15 +47,23 @@ class DepartmentPresenter(var view:DepartmentContract.DepartmentView) : Departme
             .fetchAllBoards().concatMap {
                 it.body()?.forEach{task->
                     boards.add(yandexToGeneric(task))
+                    Log.d("fetch",task.name)
                 }
+                view.updateAdapter(boards)
                 trelloRepository.fetchBoards()
             }.concatMap {
                 it.body()?.forEach {task ->
                     var found = boards.filter{inTask -> inTask.name == task.name}
                     if(found.isNotEmpty()){
-
+                        Log.d("fetch",found.toString())
+                        var index = boards.indexOf(found.first())
+                        boards[index].trelloId = task.id
+                    }else{
+                        boards.add(trelloToGeneric(task))
                     }
+                    Log.d("fetch",task.name)
                 }
+                view.updateAdapter(boards)
                 Observable.just(null)
             }.subscribe({
 
