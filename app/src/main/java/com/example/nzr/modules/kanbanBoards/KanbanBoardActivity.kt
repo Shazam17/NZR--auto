@@ -18,22 +18,20 @@ class KanbanBoardActivity :AppCompatActivity() ,KanbanContract.KanbanView{
 
     var presenter =  KanbanPresenter(this)
 
-    var boardIdIn : String = ""
-    var vendor : Boolean? = null
+    var trelloId : String = ""
+    var yandexId : String = ""
     lateinit var adapter : KanbanPagerAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(com.example.nzr.R.layout.activty_kanban)
-        boardIdIn = intent.extras!!.getString("id")!!
-        vendor = intent.extras!!.getBoolean("vendor")
+        trelloId = intent.extras!!.getString("trello")!!
+        yandexId = intent.extras!!.getString("yande")!!
 
-        if(!vendor!!){
-            presenter.fetchListsRepYandex()
-        }else{
-            presenter.fetchListsRepTrello()
 
-        }
+        presenter.fetch()
+
+
     }
 
     override fun initPagerAdapter(lists: List<listsCards>){
