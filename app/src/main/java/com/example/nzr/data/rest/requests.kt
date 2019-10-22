@@ -2,7 +2,6 @@ package com.example.nzr.data.rest
 
 import com.example.nzr.data.rest.models.*
 import io.reactivex.Observable
-import io.reactivex.Single
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
@@ -21,16 +20,16 @@ interface TrelloRequests{
 
 
     @GET("boards/{boardID}")
-    fun getBoard(@Path("boardID")boardId:String) :Single<Response<board>>
+    fun getBoard(@Path("boardID")boardId:String) :Observable<Response<board>>
 
     @GET("boards/{boardID}/lists")
-    fun getListsOfBoard(@Path("boardID")boardId:String,@QueryMap params: Map<String, String>) :Single<Response<List<listsCards>>>
+    fun getListsOfBoard(@Path("boardID")boardId:String,@QueryMap params: Map<String, String>) :Observable<Response<List<listsCards>>>
 
     @GET("cards/{cardId}")
-    fun getCardById(@Path("cardId")cardId:String, @Query("fields")fields:String) : Single<Response<cardDetail>>
+    fun getCardById(@Path("cardId")cardId:String, @Query("fields")fields:String) : Observable<Response<cardDetail>>
 
     @GET("members/5992868b5f6b925617fc350c/boards")
-    fun getAllBoards(@QueryMap params:Map<String,String>):Single<Response<List<board>>>
+    fun getAllBoards(@QueryMap params:Map<String,String>):Observable<Response<List<board>>>
 
     @POST("cards/")
     fun createCard(@QueryMap params:Map<String,String>)
@@ -46,17 +45,17 @@ interface TrelloRequests{
 interface YandexRequests{
 
     @GET("boards")
-    fun getAllBoards():Single<Response<List<yandexBoard>>>
+    fun getAllBoards():Observable<Response<List<yandexBoard>>>
 
     @GET("issues/{cardId}")
-    fun getCardById(@Path("cardId") cardId:String) :Single<Response<yandexCard>>
+    fun getCardById(@Path("cardId") cardId:String) :Observable<Response<yandexCard>>
 
     @POST("issues/_search")
-    fun getCards(@Body filter: Map<String,String>) : Single<Response<List<yandexCard>>>
+    fun getCards(@Body filter: Map<String,String>) : Observable<Response<List<yandexCard>>>
 
 
     @POST("issues/")
-    fun createCard(@Body params:requestCreateCardYandexBody) :Single<Response<yandexCard>>
+    fun createCard(@Body params:requestCreateCardYandexBody) :Observable<Response<yandexCard>>
 }
 
 class RetrofitFabric{

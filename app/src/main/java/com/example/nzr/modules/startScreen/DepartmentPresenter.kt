@@ -9,6 +9,7 @@ import io.reactivex.Observable
 import io.reactivex.Scheduler
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.functions.BiFunction
 import io.reactivex.rxkotlin.Observables
 import io.reactivex.rxkotlin.plusAssign
 import io.reactivex.schedulers.Schedulers
@@ -23,25 +24,48 @@ class DepartmentPresenter(var view:DepartmentContract.DepartmentView) : Departme
     var boards :MutableList<genericBoardShort> = ArrayList()
 
     override fun fetchDepartments() {
-        subscriptions += yandexRepository
-            .fetchAllBoards()
-            .subscribe({
-                it.body()?.forEach { boards.add(yandexToGeneric(it))
-                Log.d("fetch",it.name)}
-                view.updateAdapter(boards)
+//        subscriptions += yandexRepository
+//            .fetchAllBoards()
+//            .subscribe({
+//                it.body()?.forEach { boards.add(yandexToGeneric(it))
+//                Log.d("fetch",it.name)}
+//                view.updateAdapter(boards)
+//            },{
+//                Log.d("fetch",it.localizedMessage)
+//            })
+//
+//        subscriptions += trelloRepository
+//            .fetchBoards()
+//            .subscribe({
+//                it.body()?.forEach { boards.add(trelloToGeneric(it))
+//                    Log.d("fetch",it.name)}
+//                view.updateAdapter(boards)
+//            },{
+//                    Log.d("fetch",it.localizedMessage)
+//                })
+        var obs1 = yandexRepository
+            .fetchAllBoards().concatMap {
+                it.body()?.forEach{task->
+                    boards.add(yandexToGeneric(task))
+                }
+                trelloRepository.fetchBoards()
+            }.concatMap {
+                it.body()?.forEach {task ->
+                    var found = boards.filter{inTask -> inTask.name == task.name}
+                    if(found.isNotEmpty()){
+
+                    }
+                }
+                Observable.just(null)
+            }.subscribe({
+
             },{
-                Log.d("fetch",it.localizedMessage)
+
             })
 
-        subscriptions += trelloRepository
+        var obs2 = trelloRepository
             .fetchBoards()
-            .subscribe({
-                it.body()?.forEach { boards.add(trelloToGeneric(it))
-                    Log.d("fetch",it.name)}
-                view.updateAdapter(boards)
-            },{
-                    Log.d("fetch",it.localizedMessage)
-                })
+
 
     }
 

@@ -63,8 +63,8 @@ class DepartmentAdapter(var departs :MutableList<genericBoardShort>,val context:
 
     override fun onBindViewHolder(holder: DepartHolder, position: Int) {
         holder.name.text = departs.get(position).name
-        holder.id = departs.get(position).id
-        holder.vendor = departs.get(position).vendor
+        //holder.id = departs.get(position).id
+        //holder.vendor = departs.get(position).vendor
         holder.changeColor()
     }
 }

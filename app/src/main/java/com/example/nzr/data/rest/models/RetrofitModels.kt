@@ -61,9 +61,9 @@ data class yandexQueue(
 )
 
 data class genericBoardShort(
-    var id : String,
-    var name : String,
-    var vendor : Boolean
+    var trelloId : String?,
+    var yandexId : String?,
+    var name : String
 )
 
 data class yandexCard(
@@ -85,11 +85,11 @@ data class requestCreateCardYandexBody(
 )
 
 fun yandexToGeneric(board:yandexBoard) : genericBoardShort{
-    return genericBoardShort(board.id , board.name, false)
+    return genericBoardShort(null,board.id , board.name)
 }
 
 fun trelloToGeneric(board:board) : genericBoardShort{
-    return genericBoardShort(board.id , board.name, true)
+    return genericBoardShort(board.id ,null, board.name)
 }
 
 

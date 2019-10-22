@@ -6,7 +6,7 @@ import com.example.nzr.data.rest.models.cardDetail
 import com.example.nzr.data.rest.models.cardShort
 import com.example.nzr.data.rest.models.listsCards
 import com.example.nzr.modules.startScreen.RXPresenter
-import io.reactivex.Single
+import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
@@ -16,7 +16,7 @@ class TrelloRepository {
 
     var trelloFabric =  RetrofitFabric().getTrello()
 
-    fun fetchCardsById(id:String):Single<Response<List<listsCards>>>{
+    fun fetchCardsById(id:String):Observable<Response<List<listsCards>>>{
         var map = mapOf("cards" to "all",
             "card_fields" to "name",
             "filter" to "open",
@@ -27,7 +27,7 @@ class TrelloRepository {
             .observeOn(AndroidSchedulers.mainThread())
     }
 
-    fun fetchBoards(): Single<Response<List<board>>> {
+    fun fetchBoards(): Observable<Response<List<board>>> {
         var map = mapOf("fields" to "all")
 
         return trelloFabric
@@ -36,7 +36,7 @@ class TrelloRepository {
             .observeOn(AndroidSchedulers.mainThread())
     }
 
-    fun fetchCardById(id :String) :Single<Response<cardDetail>> {
+    fun fetchCardById(id :String) :Observable<Response<cardDetail>> {
         var fields = "name,desc"
         return trelloFabric
             .getCardById(id, fields)
