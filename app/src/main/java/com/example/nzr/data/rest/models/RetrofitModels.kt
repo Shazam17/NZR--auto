@@ -35,7 +35,7 @@ data class cardDetail(
 data class listsCards(
     var id : String,
     var name:String,
-    var cards : List<cardShort>
+    var cards : MutableList<cardShort>
 )
 
 data class yandexBoard(
@@ -73,7 +73,15 @@ data class yandexCard(
     var version : Int,
     var lastCommentUpdatedAt : String,
     var summary : String,
-    var queue: yandexQueue
+    var queue: yandexQueue,
+    var status :status
+
+)
+data class status(
+    var self:String,
+    var id:String,
+    var key:String,
+    var display: String
 )
 
 data class queueShort(

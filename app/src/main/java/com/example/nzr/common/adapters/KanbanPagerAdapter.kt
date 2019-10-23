@@ -11,7 +11,7 @@ import com.example.nzr.R
 import com.example.nzr.data.rest.models.listsCards
 import kotlinx.android.synthetic.main.kanban_pager_item.view.*
 
-class KanbanPagerAdapter(var lists: List<listsCards>,var context: Context,var vendor:Boolean) : RecyclerView.Adapter<KanbanPagerAdapter.PagerHolder>(){
+class KanbanPagerAdapter(var lists: List<listsCards>,var context: Context) : RecyclerView.Adapter<KanbanPagerAdapter.PagerHolder>(){
 
 
 
@@ -19,7 +19,7 @@ class KanbanPagerAdapter(var lists: List<listsCards>,var context: Context,var ve
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PagerHolder {
        return PagerHolder(LayoutInflater
            .from(context)
-           .inflate(R.layout.kanban_pager_item,parent,false),context,vendor)
+           .inflate(R.layout.kanban_pager_item,parent,false),context)
     }
 
     override fun getItemCount(): Int {
@@ -30,13 +30,13 @@ class KanbanPagerAdapter(var lists: List<listsCards>,var context: Context,var ve
         holder.setUp(lists.get(position))
     }
 
-    class PagerHolder(var view: View,var context: Context,val vendor: Boolean) : RecyclerView.ViewHolder(view){
+    class PagerHolder(var view: View,var context: Context) : RecyclerView.ViewHolder(view){
 
         var list = view.list
         lateinit var adapter :CardListAdapter
 
         fun setUp(listsCards: listsCards){
-            adapter = CardListAdapter(listsCards.cards,context = context,vendor = vendor)
+            adapter = CardListAdapter(listsCards.cards,context = context)
             list.adapter = adapter
             list.layoutManager = LinearLayoutManager(context)
 

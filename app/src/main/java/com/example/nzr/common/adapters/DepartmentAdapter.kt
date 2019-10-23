@@ -20,8 +20,8 @@ class DepartmentAdapter(var departs :MutableList<genericBoardShort>,val context:
     class DepartHolder(var view : View,val context: Context) : RecyclerView.ViewHolder(view){
         val name = view.textCardKanban
         var card = view.card
-        lateinit var trelloId :String
-        lateinit var yandexId :String
+        var trelloId :String? = null
+        var yandexId :String? = null
         init{
                 view.setOnClickListener{
                     var intent = Intent(context,KanbanBoardActivity::class.java)
@@ -32,11 +32,6 @@ class DepartmentAdapter(var departs :MutableList<genericBoardShort>,val context:
                 }
         }
 
-    }
-    fun update(list :MutableList<genericBoardShort>){
-        departs.clear()
-        departs.addAll(list)
-        notifyDataSetChanged()
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DepartHolder {
         return DepartmentAdapter.DepartHolder(
@@ -50,8 +45,8 @@ class DepartmentAdapter(var departs :MutableList<genericBoardShort>,val context:
 
     override fun onBindViewHolder(holder: DepartHolder, position: Int) {
         holder.name.text = departs.get(position).name
-        holder.trelloId = departs.get(position).trelloId!!
-        holder.yandexId = departs.get(position).yandexId!!
+        holder.trelloId = departs.get(position).trelloId
+        holder.yandexId = departs.get(position).yandexId
 
     }
 }

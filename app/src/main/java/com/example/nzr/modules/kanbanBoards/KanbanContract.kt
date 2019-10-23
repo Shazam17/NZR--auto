@@ -10,12 +10,14 @@ interface KanbanContract{
     interface KanbanPresenter{
         fun fetchListsRepTrello()
         fun fetchListsRepYandex()
+        fun fetch()
     }
 
     interface KanbanView : IView{
         override fun getActivity(): Activity
         fun initPagerAdapter(lists: List<listsCards>)
-        fun getBoardId():String
+        fun getTrelloBoardId():String?
+        fun getYandexBoardId():String?
     }
 
     interface KanbanModel{

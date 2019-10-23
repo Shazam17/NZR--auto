@@ -14,18 +14,17 @@ import com.example.nzr.data.rest.models.cardShort
 import com.example.nzr.modules.CardDetailActivity.CardDetailActivity
 import kotlinx.android.synthetic.main.card_kanban.view.*
 
-class CardListAdapter(list:List<cardShort>,val context :Context,val vendor:Boolean) :RecyclerView.Adapter<CardListAdapter.CardHolder>(){
+class CardListAdapter(list:List<cardShort>,val context :Context) :RecyclerView.Adapter<CardListAdapter.CardHolder>(){
 
     var cardList:List<cardShort> = list
 
-    class CardHolder(val view: View,val context: Context,val vendor: Boolean) : RecyclerView.ViewHolder(view){
+    class CardHolder(val view: View,val context: Context) : RecyclerView.ViewHolder(view){
         var text : TextView = view.textCardKanban
         var id :String = ""
         init{
             view.setOnClickListener{
                 var intent = Intent(context,CardDetailActivity::class.java)
                 Log.d("detail",id)
-                intent.putExtra("vendor",vendor)
                 intent.putExtra("id",id)
                 context.startActivity(intent)
             }
@@ -38,11 +37,11 @@ class CardListAdapter(list:List<cardShort>,val context :Context,val vendor:Boole
 
     override fun onBindViewHolder(holder: CardHolder, position: Int) {
         holder.text.text = cardList.get(position).name
-        holder.id = cardList.get(position).id
+        //holder.id = cardList.get(position).id
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CardHolder {
             return CardHolder(LayoutInflater.from(context)
-                .inflate(R.layout.card_kanban,parent,false),context,vendor)
+                .inflate(R.layout.card_kanban,parent,false),context)
     }
 }

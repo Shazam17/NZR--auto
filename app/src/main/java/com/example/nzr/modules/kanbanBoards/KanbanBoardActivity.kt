@@ -10,58 +10,62 @@ import android.view.Menu
 import android.content.Intent
 import android.util.Log
 import android.view.MenuItem
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.nzr.modules.addCard.AddCardActivity
+import kotlinx.android.synthetic.main.activity_choose_dep.*
 
 
 class KanbanBoardActivity :AppCompatActivity() ,KanbanContract.KanbanView{
 
 
-    var presenter =  KanbanPresenter(this)
+    private var presenter =  KanbanPresenter(this)
 
-    var trelloId : String = ""
-    var yandexId : String = ""
+    private var trelloId : String? = null
+    private var yandexId : String? = null
     lateinit var adapter : KanbanPagerAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(com.example.nzr.R.layout.activty_kanban)
-        trelloId = intent.extras!!.getString("trello")!!
-        yandexId = intent.extras!!.getString("yande")!!
+        trelloId = intent.extras!!.getString("trello")
+        yandexId = intent.extras!!.getString("yandex")
 
 
         presenter.fetch()
 
-
     }
 
     override fun initPagerAdapter(lists: List<listsCards>){
-        adapter = KanbanPagerAdapter(lists,this,vendor!!)
+        adapter = KanbanPagerAdapter(lists,this)
         pager.adapter = adapter
     }
 
-    override fun getBoardId():String {
-        return boardIdIn
+    override fun getTrelloBoardId():String? {
+        return trelloId
+    }
+
+    override fun getYandexBoardId():String? {
+        return yandexId
     }
 
     override fun getActivity() : Activity{
         return this
     }
+
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(com.example.nzr.R.menu.menu_board, menu)
         return true
     }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.getItemId()) {
             com.example.nzr.R.id.add  ->{
                 var intent = Intent(this,AddCardActivity::class.java)
-                Log.d("board",boardIdIn)
-                intent.putExtra("vendor",vendor)
-                intent.putExtra("boardId",boardIdIn)
+                intent.putExtra("trello",trelloId)
+                intent.putExtra("yandex",yandexId)
                 startActivity(intent)
                 return true
-
             }
-
             else ->
                 // If we got here, the user's action was not recognized.
                 // Invoke the superclass to handle it.
