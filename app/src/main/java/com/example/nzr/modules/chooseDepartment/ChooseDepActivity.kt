@@ -19,20 +19,20 @@ class ChooseDepActivity : AppCompatActivity()  ,
         presenter = DepartmentPresenter(this)
         presenter.fetchDepartments()
 
-
-
-
-        //TODO вывести список отделов
-        //TODO навигация от отдела к доскам
+        swipeToRefreshChooseDep.setOnRefreshListener{
+            presenter.fetchDepartments()
+        }
     }
 
-    override fun initAdapter(depList:MutableList<GenericBoardShort>) {
-
+    override fun setRefresh(refresh: Boolean) {
+        swipeToRefreshChooseDep.setRefreshing(refresh)
     }
+
     override fun updateAdapter(depList:MutableList<GenericBoardShort>){
         adapter = DepartmentAdapter(depList, this)
         list.adapter = adapter
         list.layoutManager = LinearLayoutManager(this)
+        setRefresh(false)
 
     }
 }

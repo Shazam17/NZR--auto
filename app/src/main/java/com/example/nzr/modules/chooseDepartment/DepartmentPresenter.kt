@@ -17,6 +17,7 @@ class  DepartmentPresenter(var view: ChooseDepartmentContract.DepartmentView) :
     var boards: MutableList<GenericBoardShort> = ArrayList()
 
     override fun fetchDepartments() {
+        boards.clear()
         subscriptions += yandexRepository.fetchAllQueues()
             .concatMap {
                 it.body()?.forEach { task ->

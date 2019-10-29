@@ -14,11 +14,11 @@ class KanbanPresenter(var view :KanbanContract.KanbanView) : KanbanContract.Kanb
     var lists : MutableList<ListsCards> = ArrayList()
 
     override fun getTrelloListId(position:Int): String {
-        if(lists.size != 0){
-            return lists[position].id
-        }else{
-            return ""
-        }
+            if(lists.size != 0){
+                return lists[position].id
+            }else{
+                return ""
+            }
     }
 
     override fun fetch() {
@@ -56,23 +56,34 @@ class KanbanPresenter(var view :KanbanContract.KanbanView) : KanbanContract.Kanb
                 }.subscribe({
 
                 },{
+                    Log.d("fetchRep","error ${it.localizedMessage}")
                 })
         }
     }
 
     override fun updateList() {
         lists.clear()
-        if(view.getTrelloBoardId() != null && view.getYandexBoardId() != null){
+        if(view.getTrelloBoardId() != "no" && view.getYandexBoardId() != "no"){
             fetch()
         }else{
-            if(view.getTrelloBoardId() != null){
+            if(view.getTrelloBoardId() != "no"){
                 fetchListsRepTrello()
             }
-            if(view.getYandexBoardId() != null){
+            if(view.getYandexBoardId() != "no"){
                 fetchListsRepYandex()
             }
         }
+    }
 
+
+    override fun createTrelloBoard() {
+        subscriptions += TrelloRepository()
+            .createList(view.getTrelloBoardId()!!,"list")
+            .subscribe({
+
+        },{
+            Log.d("kanban","error ${it.localizedMessage}")
+        })
     }
 
     override fun fetchListsRepTrello(){
@@ -84,7 +95,8 @@ class KanbanPresenter(var view :KanbanContract.KanbanView) : KanbanContract.Kanb
                 view.initPagerAdapter(lists)
                 view.setRefresh(false)
             },{
-                Log.d("fetchRep","errorr")
+                Log.d("fetchRep","error ${it.localizedMessage}")
+                view.setRefresh(false)
             })
     }
 
@@ -93,18 +105,20 @@ class KanbanPresenter(var view :KanbanContract.KanbanView) : KanbanContract.Kanb
         subscriptions += YandexRepository()
             .fetchCards(mapOf("queue" to view.getYandexBoardId()!!))
             .subscribe({
-                    var  ls : MutableList<CardShort> = ArrayList()
-                    if(it.body() != null){
-                        it.body()!!.forEach { ls.add(CardShort(it.id,it.summary,false))
+                var  ls : MutableList<CardShort> = ArrayList()
+                if(it.body() != null){
+                    it.body()!!.forEach { ls.add(CardShort(it.id,it.summary,false))
                         Log.d("fetchRep",it.summary)}
-                    }
-                    var list = ListsCards("id","name", ls)
-                    lists.add(list)
-                    view.initPagerAdapter(lists)
+                }
+                var list = ListsCards("id","name", ls)
+                lists.add(list)
+                view.initPagerAdapter(lists)
                 view.setRefresh(false)
             },{
+                Log.d("fetchRep","error ${it.localizedMessage}")
+                view.setRefresh(false)
 
-                })
+            })
     }
 
 }

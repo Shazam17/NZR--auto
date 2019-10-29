@@ -1,6 +1,7 @@
 package com.example.nzr.modules.kanbanBoards
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.example.nzr.data.rest.models.ListsCards
@@ -9,6 +10,7 @@ import android.view.Menu
 import android.content.Intent
 import android.util.Log
 import android.view.MenuItem
+import com.example.nzr.data.rest.repository.TrelloRepository
 import com.example.nzr.modules.addCard.AddCardActivity
 
 
@@ -80,15 +82,26 @@ class KanbanBoardActivity :AppCompatActivity() ,KanbanContract.KanbanView{
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.getItemId()) {
             com.example.nzr.R.id.add  ->{
+                if(presenter.lists.isEmpty() && trelloId != "no"){
+                    //var builder = AlertDialog.Builder(this)
+                    //builder.setTitle("Enter name of list")
+                    //builder.setPositiveButton("Enter name of list")
+
+                }
                 if(presenter.lists.isNotEmpty()){
                     //TODO добавить логику добавления списка
                     var intent = Intent(this,AddCardActivity::class.java)
                     intent.putExtra("trelloListId",presenter.getTrelloListId(adapter.current))
                     intent.putExtra("yandexId",yandexId)
                     startActivity(intent)
-                }else{
-
                 }
+                if( yandexId != "no"){
+                    var intent = Intent(this,AddCardActivity::class.java)
+                    intent.putExtra("yandexId",yandexId)
+                    intent.putExtra("trelloListId","no")
+                    startActivity(intent)
+                }
+
                 return true
             }
             else ->

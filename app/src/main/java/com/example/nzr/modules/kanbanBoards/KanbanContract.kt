@@ -12,6 +12,7 @@ interface KanbanContract{
         fun fetch()
         fun updateList()
         fun getTrelloListId(position:Int):String
+        fun createTrelloBoard()
     }
 
     interface KanbanView : IView{
