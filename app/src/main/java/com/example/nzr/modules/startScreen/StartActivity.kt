@@ -31,7 +31,7 @@ class StartActivity : AppCompatActivity() ,StartContract.StartView{
         signInButton.setOnClickListener {
             presenter.signIn()
         }
-        val fingerprints = VKUtils.getCertificateFingerprint(this, this.packageName)
+        //val fingerprints = VKUtils.getCertificateFingerprint(this, this.packageName)
 
     }
 

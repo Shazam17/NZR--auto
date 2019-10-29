@@ -18,8 +18,8 @@ class DepartmentAdapter(var departs :MutableList<GenericBoardShort>, val context
         val name = view.textCardKanban
         var card = view.card
         var vendors = view.vendorText
-        var trelloId :String? = null
-        var yandexId :String? = null
+        var trelloId :String = "no"
+        var yandexId :String = "no"
         init{
                 view.setOnClickListener{
                     var intent = Intent(context,KanbanBoardActivity::class.java)
@@ -45,15 +45,15 @@ class DepartmentAdapter(var departs :MutableList<GenericBoardShort>, val context
 
     override fun onBindViewHolder(holder: DepartHolder, position: Int) {
         holder.name.text = departs.get(position).name
-        holder.trelloId = departs.get(position).trelloId
-        holder.yandexId = departs.get(position).yandexId
-        if(holder.trelloId != null){
+        holder.trelloId = departs.get(position).trelloId?:"no"
+        holder.yandexId = departs.get(position).yandexId?:"no"
+        if(holder.trelloId != "no"){
             holder.vendors.text = "trello"
         }
-        if(holder.yandexId != null){
+        if(holder.yandexId != "no"){
             holder.vendors.text = "yandex"
         }
-        if(holder.trelloId != null && holder.yandexId != null ){
+        if(holder.trelloId != "no" && holder.yandexId != "no" ){
             holder.vendors.text = "yandex/trello"
 
         }

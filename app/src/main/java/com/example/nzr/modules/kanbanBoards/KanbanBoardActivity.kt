@@ -27,7 +27,7 @@ class KanbanBoardActivity :AppCompatActivity() ,KanbanContract.KanbanView{
         setContentView(com.example.nzr.R.layout.activty_kanban)
         trelloId = intent.extras?.getString("trello")?:"no"
         yandexId = intent.extras?.getString("yandex")?:"no"
-        name = intent.extras?.getString("name")?:"name"
+        name = intent.extras?.getString("name")?:""
         title = "Доска ${name}"
         Log.d("kanban","trello id = ${trelloId} yandexId = ${yandexId}")
 
@@ -36,7 +36,7 @@ class KanbanBoardActivity :AppCompatActivity() ,KanbanContract.KanbanView{
 
     override fun initViews() {
         swipeToRefreshKanban.setOnRefreshListener {
-            presenter.updateList()
+            presenter.fetch()
         }
     }
 
@@ -46,7 +46,7 @@ class KanbanBoardActivity :AppCompatActivity() ,KanbanContract.KanbanView{
     override fun onResume() {
         super.onResume()
         Log.d("kanban","resuming")
-        presenter.updateList()
+        presenter.fetch()
     }
 
     override fun initPagerAdapter(lists: List<ListsCards>){
@@ -75,10 +75,13 @@ class KanbanBoardActivity :AppCompatActivity() ,KanbanContract.KanbanView{
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.getItemId()) {
             com.example.nzr.R.id.add  ->{
-                if(presenter.lists.isNotEmpty()){
+                if(presenter.lists.isNotEmpty() || yandexId != "no"){
                     //TODO добавить логику добавления списка
                     var intent = Intent(this,AddCardActivity::class.java)
-                    intent.putExtra("trelloListId",presenter.getTrelloListId(adapter.current))
+                    if(trelloId != "no"){
+                        intent.putExtra("trelloListId",presenter.getTrelloListId(adapter.current))
+
+                    }
                     intent.putExtra("yandexId",yandexId)
                     startActivity(intent)
                 }else{

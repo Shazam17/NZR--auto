@@ -24,6 +24,7 @@ class AddCardActivity : AppCompatActivity(), CreateCardContract.AddCardView {
         setContentView(R.layout.activity_create_card)
         trelloId = intent.extras?.getString("trelloListId")?:"no"
         yandexId = intent.extras?.getString("yandexId")?:"no"
+        Log.d("AddCardActivity","ids $trelloId $yandexId")
         initViews()
     }
 
@@ -46,11 +47,9 @@ class AddCardActivity : AppCompatActivity(), CreateCardContract.AddCardView {
             var vendor: Boolean?
 
             if (vendorId == 1) {
-                vendor = true
-                presenter?.createCard(cardName.text.toString(), trelloId, vendor)
+                presenter?.createCard(cardName.text.toString(), trelloId, true)
             } else if(vendorId == 0){
-                vendor = false
-                presenter?.createCard(cardName.text.toString(), yandexId, vendor)
+                presenter?.createCard(cardName.text.toString(), yandexId, false)
             }
 
         }

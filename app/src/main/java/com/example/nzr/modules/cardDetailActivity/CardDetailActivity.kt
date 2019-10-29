@@ -11,7 +11,7 @@ import com.example.nzr.data.rest.repository.TrelloRepository
 import com.example.nzr.data.rest.repository.YandexRepository
 import kotlinx.android.synthetic.main.activity_card_detail.*
 
-class   CardDetailActivity: AppCompatActivity(), CardDetailContract.CardDetailView,IView{
+class CardDetailActivity: AppCompatActivity(), CardDetailContract.CardDetailView,IView{
 
     var id : String? = ""
     var vendor : Boolean? = null
@@ -99,7 +99,11 @@ class   CardDetailActivity: AppCompatActivity(), CardDetailContract.CardDetailVi
         finish()
     }
 
-    override fun initViews(name : String, desc : String){
+    override fun initViews() {
+
+    }
+
+    override fun initFields(name : String, desc : String){
         nameDetail.text = name
         descDetail.text = desc
     }

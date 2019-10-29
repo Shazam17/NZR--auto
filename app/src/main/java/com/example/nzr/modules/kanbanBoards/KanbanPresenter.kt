@@ -17,25 +17,27 @@ class KanbanPresenter(var view :KanbanContract.KanbanView) : KanbanContract.Kanb
         if(lists.size != 0){
             return lists[position].id
         }else{
-            return ""
+            return "no"
         }
     }
 
     override fun fetch() {
-        if(view.getTrelloBoardId() != null && view.getYandexBoardId() != null){
+        lists.clear()
+        Log.d("kanbanPresenter","ids ${view.getTrelloBoardId()} ${view.getYandexBoardId()}")
+        if(view.getTrelloBoardId() != "no" && view.getYandexBoardId() != "no"){
             fetchAll()
         }else{
-            if(view.getTrelloBoardId() != null){
+            if(view.getTrelloBoardId() != "no"){
                 fetchListsRepTrello()
             }
-            if(view.getYandexBoardId() != null){
+            if(view.getYandexBoardId() != "no"){
                 fetchListsRepYandex()
             }
         }
     }
 
     private fun fetchAll() {
-        if(view.getTrelloBoardId() != null && view.getYandexBoardId() != null ){
+        if(view.getTrelloBoardId() != "no" && view.getYandexBoardId() != "no" ){
             subscriptions += TrelloRepository()
                 .fetchCardsById(view.getTrelloBoardId()!!)
                 .concatMap {
@@ -48,19 +50,19 @@ class KanbanPresenter(var view :KanbanContract.KanbanView) : KanbanContract.Kanb
                     Log.d("fetchRep",it.body().toString())
                     if(it.body() != null){
                         var  lsOpen : MutableList<CardShort> = ArrayList()
-                        it.body()!!.forEach { task -> if(task.Status.key.equals("open")) lsOpen.add(CardShort(task.id,task.summary,false))}
+                        it.body()!!.forEach { task -> if(task.status.key.equals("open")) lsOpen.add(CardShort(task.id,task.summary,false))}
                         lists[0].cards.addAll(lsOpen)
 
                         var lsNeedInformation : MutableList<CardShort> = ArrayList()
-                        it.body()!!.forEach { task -> if(task.Status.key.equals("needInfo")) lsNeedInformation.add(CardShort(task.id,task.summary,false))}
+                        it.body()!!.forEach { task -> if(task.status.key.equals("needInfo")) lsNeedInformation.add(CardShort(task.id,task.summary,false))}
                         lists[1].cards.addAll(lsNeedInformation)
 
                         var lsInWork : MutableList<CardShort> = ArrayList()
-                        it.body()!!.forEach { task -> if(task.Status.key.equals("inProgress")) lsInWork.add(CardShort(task.id,task.summary,false))}
+                        it.body()!!.forEach { task -> if(task.status.key.equals("inProgress")) lsInWork.add(CardShort(task.id,task.summary,false))}
                         lists[2].cards.addAll(lsInWork)
 
                         var lsClosed : MutableList<CardShort> = ArrayList()
-                        it.body()!!.forEach { task -> if(task.Status.key.equals("resolved")) lsClosed.add(CardShort(task.id,task.summary,false))}
+                        it.body()!!.forEach { task -> if(task.status.key.equals("resolved")) lsClosed.add(CardShort(task.id,task.summary,false))}
                         lists[3].cards.addAll(lsClosed)
                         view.initPagerAdapter(lists)
                         view.setRefresh(false)
@@ -69,24 +71,13 @@ class KanbanPresenter(var view :KanbanContract.KanbanView) : KanbanContract.Kanb
                 }.subscribe({
 
                 },{
+                    Log.d("kanbanPresenter","error ${it.localizedMessage}")
+                    view.setRefresh(false)
                 })
         }
     }
 
-    override fun updateList() {
-        lists.clear()
-        if(view.getTrelloBoardId() != "no" && view.getYandexBoardId() != "no"){
-            fetch()
-        }else{
-            if(view.getTrelloBoardId() != "no"){
-                fetchListsRepTrello()
-            }
-            if(view.getYandexBoardId() != "no"){
-                fetchListsRepYandex()
-            }
-        }
 
-    }
 
     private fun fetchListsRepTrello(){
         subscriptions += TrelloRepository()
@@ -97,7 +88,8 @@ class KanbanPresenter(var view :KanbanContract.KanbanView) : KanbanContract.Kanb
                 view.initPagerAdapter(lists)
                 view.setRefresh(false)
             },{
-                Log.d("fetchRep","errorr")
+                Log.d("kanbanPresenter","error ${it.localizedMessage}")
+                view.setRefresh(false)
             })
     }
 
@@ -106,18 +98,37 @@ class KanbanPresenter(var view :KanbanContract.KanbanView) : KanbanContract.Kanb
         subscriptions += YandexRepository()
             .fetchCards(mapOf("queue" to view.getYandexBoardId()!!))
             .subscribe({
-                    var  ls : MutableList<CardShort> = ArrayList()
-                    if(it.body() != null){
-                        it.body()!!.forEach { ls.add(CardShort(it.id,it.summary,false))
-                        Log.d("fetchRep",it.summary)}
-                    }
-                    var list = ListsCards("id","name", ls)
-                    lists.add(list)
-                    view.initPagerAdapter(lists)
+                    //var  ls : MutableList<CardShort> = ArrayList()
+//                    if(it.body() != null){
+//                        it.body()!!.forEach { ls.add(CardShort(it.id,it.summary,false))
+//                        Log.d("fetchRep",it.summary)}
+//                    }
+//                    var list = ListsCards("id","name", ls)
+
+
+                var  lsOpen : MutableList<CardShort> = ArrayList()
+                it.body()!!.forEach { task -> if(task.status.key.equals("open")) lsOpen.add(CardShort(task.id,task.summary,false))}
+                lists.add(ListsCards("","",lsOpen))
+
+                var lsNeedInformation : MutableList<CardShort> = ArrayList()
+                it.body()!!.forEach { task -> if(task.status.key.equals("needInfo")) lsNeedInformation.add(CardShort(task.id,task.summary,false))}
+                lists.add(ListsCards("","",lsNeedInformation))
+
+                var lsInWork : MutableList<CardShort> = ArrayList()
+                it.body()!!.forEach { task -> if(task.status.key.equals("inProgress")) lsInWork.add(CardShort(task.id,task.summary,false))}
+                lists.add(ListsCards("","",lsInWork))
+
+                var lsClosed : MutableList<CardShort> = ArrayList()
+                it.body()!!.forEach { task -> if(task.status.key.equals("resolved")) lsClosed.add(CardShort(task.id,task.summary,false))}
+                lists.add(ListsCards("","",lsClosed))
+
+
+                view.initPagerAdapter(lists)
                 view.setRefresh(false)
             },{
-
-                })
+                Log.d("kanbanPresenter","error ${it.localizedMessage}")
+                view.setRefresh(false)
+            })
     }
 
 }

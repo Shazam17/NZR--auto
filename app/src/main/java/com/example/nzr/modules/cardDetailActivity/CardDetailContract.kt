@@ -13,7 +13,7 @@ interface CardDetailContract {
     }
 
     interface CardDetailView : IView{
-        fun initViews(name : String , desc : String)
+        fun initFields(name : String , desc : String)
         fun getVendor():Boolean
         fun back()
     }

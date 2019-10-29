@@ -8,7 +8,6 @@ interface KanbanContract{
 
     interface KanbanPresenter{
         fun fetch()
-        fun updateList()
         fun getTrelloListId(position:Int):String
     }
 

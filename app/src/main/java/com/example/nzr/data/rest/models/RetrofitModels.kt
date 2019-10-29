@@ -68,7 +68,7 @@ data class YandexCard(
     var lastCommentUpdatedAt : String,
     var summary : String,
     var queue: YandexQueue,
-    var Status :Status
+    var status :Status
 
 )
 data class Status(

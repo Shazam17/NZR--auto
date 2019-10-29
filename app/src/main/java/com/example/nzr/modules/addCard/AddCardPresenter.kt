@@ -19,7 +19,6 @@ class CreateCardPresenter(var view:CreateCardContract.AddCardView) :CreateCardCo
                     view.back()
                 },{
                     Toast.makeText(view.getActivity(),"create success",Toast.LENGTH_SHORT).show()
-
                 })
         }else{
             Log.d("create",id)
@@ -31,8 +30,6 @@ class CreateCardPresenter(var view:CreateCardContract.AddCardView) :CreateCardCo
                         view.back()
                     },{
                         Log.d("create",it.localizedMessage)
-
-
                 })
                 }
     }
