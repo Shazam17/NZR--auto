@@ -80,7 +80,8 @@ class KanbanPresenter(var view :KanbanContract.KanbanView) : KanbanContract.Kanb
         subscriptions += TrelloRepository()
             .createList(view.getTrelloBoardId()!!,"list")
             .subscribe({
-
+                view.setRefresh(true)
+                fetchListsRepTrello()
         },{
             Log.d("kanban","error ${it.localizedMessage}")
         })

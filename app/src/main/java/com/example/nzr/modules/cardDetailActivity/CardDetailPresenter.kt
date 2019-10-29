@@ -40,12 +40,8 @@ class CardDetailPresenter(var view: CardDetailContract.CardDetailView) : CardDet
                     Log.d("fetchCardDetail",it.localizedMessage!!)
                     Toast.makeText(view.getActivity(),"Erorr in moving Card ${it.localizedMessage!!}",Toast.LENGTH_SHORT).show()
                 })
-
-
-
         }else{
             //yandex
-
             subscriptions += yandex
                 .fetchTransitionsById(id)
                 .concatMap {

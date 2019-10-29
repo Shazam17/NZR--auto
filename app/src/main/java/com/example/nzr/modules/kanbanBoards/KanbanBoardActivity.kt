@@ -86,7 +86,7 @@ class KanbanBoardActivity :AppCompatActivity() ,KanbanContract.KanbanView{
                     //var builder = AlertDialog.Builder(this)
                     //builder.setTitle("Enter name of list")
                     //builder.setPositiveButton("Enter name of list")
-
+                    presenter.createTrelloBoard()
                 }
                 if(presenter.lists.isNotEmpty()){
                     //TODO добавить логику добавления списка
