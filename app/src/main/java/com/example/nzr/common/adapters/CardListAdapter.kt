@@ -29,7 +29,7 @@ class CardListAdapter(list:ArrayList<GenericCardShort>, val context :Context) :R
                 context.startActivity(intent)
             }
         }
-    }
+    }   
 
     override fun getItemCount(): Int {
         return cardList.size
